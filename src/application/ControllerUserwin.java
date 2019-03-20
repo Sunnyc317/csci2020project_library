@@ -83,6 +83,8 @@ public class ControllerUserwin {
 	}
 
 	public void SearchBook() {
+		String input = userinput.getText().trim();
+		conlib.SearchBook(input);
 		System.out.println("Userwindow Controller: reached search button");
 	}
 

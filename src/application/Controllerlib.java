@@ -1,12 +1,12 @@
 package application;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +32,7 @@ public class Controllerlib{
 	//has to be outputstream first!!!
 	ObjectOutputStream output = null;
 	ObjectInputStream input = null;
+	DataInputStream inputdata = null;
 
 //	uilib.fxml attributes
 	@FXML public TextField username;
@@ -44,6 +45,7 @@ public class Controllerlib{
 	@FXML public TextField userinput;
 	@FXML public TextArea booklist;
 //	@FXML public Button search;
+
 
 
 //	public Modellib model = null;
@@ -60,6 +62,7 @@ public class Controllerlib{
 			//has to be output first then input !!!
 			output = new ObjectOutputStream(socket.getOutputStream());
 			input = new ObjectInputStream(socket.getInputStream());
+			inputdata = new DataInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			System.out.println("err Controllerlib: constructor: socket setting problem\n");
 			e.printStackTrace();
@@ -71,7 +74,7 @@ public class Controllerlib{
 		Message msg = new Message("null", "null", 2);
 		try {
 			output.writeObject(msg);
-//			output.flush();
+			output.flush();
 		} catch (IOException e) {
 			System.out.println("err Controllerlib: loggedin: problem sending message to server");
 			e.printStackTrace();
@@ -84,7 +87,39 @@ public class Controllerlib{
 		}
 	}
 
-	public void SearchBook() {
+	public void SearchBook(String userinput) {
+//		Message msg = new Message("","", 3, userinput);
+//		try {
+//			output.writeObject(msg);
+//			output.flush();
+//		} catch (IOException e) {
+//			System.out.println("err Controllerlib: searchBook: problem sending message to server");
+//			e.printStackTrace();
+//		}
+//
+//		try {
+//			output.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+////		ServerRespond success = null;
+//		Boolean found = false;
+//
+//		try {
+////			success = (ServerRespond)input.readObject();
+//			found = inputdata.readBoolean();
+//		} catch (IOException e) {
+//			System.out.println("err Controllerlib: searchBook: failed to receive from server");
+//			e.printStackTrace();
+//		}
+//
+//		if (found) {
+//			System.out.println("Book found");
+//		}
+//		else {
+//			System.out.println("Book no found");
+//		}
 
 	}
 

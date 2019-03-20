@@ -9,11 +9,23 @@ public class Message implements Serializable{
 	String id;
 	String password;
 	int type;
+	String text;
 
 	public Message(String id, String password, int type) {
 		this.id = id;
 		this.password = password;
 		this.type = type;
+	}
+
+	public Message(String id, String password, int type, String text) {
+		this.id = id;
+		this.password = password;
+		this.type = type;
+		this.text = text;
+	}
+
+	public String getText() {
+		return text;
 	}
 
 	public String getId() {
