@@ -132,6 +132,7 @@ public class ServerHandler implements Runnable{
 			}
 			else if (msg.getType() == 2) {
 				connected = false;
+				System.out.println("user logged out");
 			}
 		}
 	}

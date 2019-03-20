@@ -7,12 +7,17 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import javafx.fxml.Initializable;
 
 // AnchorPane
@@ -28,11 +33,19 @@ public class Controllerlib{
 	ObjectOutputStream output = null;
 	ObjectInputStream input = null;
 
+//	uilib.fxml attributes
 	@FXML public TextField username;
 	@FXML public PasswordField password;
 	@FXML public Button btlogin;
 	@FXML public Button btregister;
 	@FXML public TextArea ta;
+
+//	UserWindow.fxml attributes
+	@FXML public TextField userinput;
+	@FXML public TextArea booklist;
+//	@FXML public Button search;
+
+
 //	public Modellib model = null;
 //	model = new Modellib();
 //	public Modellib model = new Modellib();
@@ -54,15 +67,36 @@ public class Controllerlib{
 
 	}
 
-	public void LoginHandler(ActionEvent e) {
-		String id = username.getText();
-		String pswd = password.getText();
-		ta.appendText(loggedin(id, pswd));
+	public void LogoutHandler() {
+		Message msg = new Message("null", "null", 2);
+		try {
+			output.writeObject(msg);
+//			output.flush();
+		} catch (IOException e) {
+			System.out.println("err Controllerlib: loggedin: problem sending message to server");
+			e.printStackTrace();
+		}
+
+		try {
+			output.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public String loggedin(String id, String password) {
+	public void SearchBook() {
+
+	}
+
+//	public void LoginHandler(ActionEvent e) {
+//	}
+
+	public void LoginHandler(ActionEvent action_e) {
+		String id = username.getText();
+		String pswd = password.getText();
 		int type = 1;
-		Message msg = new Message(id, password, type);
+
+		Message msg = new Message(id, pswd, type);
 		try {
 			output.writeObject(msg);
 //			output.flush();
@@ -84,11 +118,32 @@ public class Controllerlib{
 		}
 
 		if (success.getSuccess()) {
-			return id + " logged in\n";
+			Platform.runLater(() -> {
+				ta.appendText(id + " logged in successfully");
+			});
+
+			try {
+//			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UserWindow.fxml"));
+//			Parent root1 = (Parent) fxmlLoader.load();
+
+//				Parent root1 = FXMLLoader.load(getClass().getResource("UserWindow.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("UserWindow.fxml"));
+            Parent root1 = loader.load();
+
+            ControllerUserwin scene2Controller = loader.getController();
+            scene2Controller.init(this);
+
+				Stage stage = new Stage();
+				stage.setScene(new Scene(root1));
+				stage.show();
+			} catch(Exception err) {
+				System.out.println("Controllerlib: LoginHandler: problem opening the second window");
+
+			}
+
 		}
-		else {
-			return id + " username or password is wrong";
-		}
+
+
 	}
 
 	public void RegisterHandler(ActionEvent e) {

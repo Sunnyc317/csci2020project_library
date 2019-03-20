@@ -20,18 +20,14 @@
 <?import javafx.scene.control.TextArea?>
 
 
-<GridPane fx:controller="application.Controllerlib" xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" vgap="10">
+<GridPane fx:controller="application.ControllerUserwin" xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" vgap="10">
 <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
-	<Label text="username" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-	<TextField fx:id="username" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+	<TextField fx:id="userinput" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+	<Button text="search" onAction="#SearchBook" fx:id="btsearch" GridPane.rowIndex="1" GridPane.columnIndex="0" />
 
-	<Label text="password" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-	<PasswordField fx:id="password" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+	<TextArea fx:id="booklist" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+	<Button text="log out" onAction="#LogoutHandler" fx:id="btlogout" GridPane.rowIndex="1" GridPane.columnIndex="1" />
 
-	<Button text="log in" onAction="#LoginHandler" fx:id="btlogin" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-	<Button text="register" onAction="#RegisterHandler" fx:id="btregister" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-
-	<TextArea fx:id="ta" GridPane.rowIndex="3" GridPane.columnIndex="0" />
 
 </GridPane>
 
