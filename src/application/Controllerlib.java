@@ -1,9 +1,12 @@
 package application;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,9 +33,11 @@ public class Controllerlib{
 	String host = "localhost";
 	int port = 1998;
 	//has to be outputstream first!!!
-	ObjectOutputStream output = null;
-	ObjectInputStream input = null;
-	DataInputStream inputdata = null;
+	// ObjectOutputStream output = null;
+	// ObjectInputStream input = null;
+	// DataInputStream inputdata = null;
+	BufferedReader input = null;
+	PrintWriter output = null;
 
 //	uilib.fxml attributes
 	@FXML public TextField username;
@@ -45,7 +50,7 @@ public class Controllerlib{
 	@FXML public TextField userinput;
 	@FXML public TextArea booklist;
 //	@FXML public Button search;
-
+	ControllerUserwin scene2Controller;
 
 
 //	public Modellib model = null;
@@ -60,9 +65,11 @@ public class Controllerlib{
 		try {
 			socket = new Socket(host, port);
 			//has to be output first then input !!!
-			output = new ObjectOutputStream(socket.getOutputStream());
-			input = new ObjectInputStream(socket.getInputStream());
-			inputdata = new DataInputStream(socket.getInputStream());
+			// output = new ObjectOutputStream(socket.getOutputStream());
+			// input = new ObjectInputStream(socket.getInputStream());
+			// inputdata = new DataInputStream(socket.getInputStream());
+			input = new BufferedReader(new InputStreamReader(socket.getInputStream()) );
+			output = new PrintWriter(socket.getOutputStream());
 		} catch (IOException e) {
 			System.out.println("err Controllerlib: constructor: socket setting problem\n");
 			e.printStackTrace();
@@ -71,102 +78,78 @@ public class Controllerlib{
 	}
 
 	public void LogoutHandler() {
-		Message msg = new Message("null", "null", 2);
-		try {
-			output.writeObject(msg);
-			output.flush();
-		} catch (IOException e) {
-			System.out.println("err Controllerlib: loggedin: problem sending message to server");
-			e.printStackTrace();
-		}
-
-		try {
-			output.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String request = "logout";
+		output.println(request);
+		output.flush();
+		output.close();
 	}
 
-	public void SearchBook(String userinput) {
-//		Message msg = new Message("","", 3, userinput);
-//		try {
-//			output.writeObject(msg);
-//			output.flush();
-//		} catch (IOException e) {
-//			System.out.println("err Controllerlib: searchBook: problem sending message to server");
-//			e.printStackTrace();
-//		}
+	public void SearchBook(String userinput) throws IOException {
+
+		output.println("search " + userinput);
+		output.flush();
+		output.close();
+
+		String content = input.readLine();
+		String[] lines = content.split("*");
+		for (String text:lines) {
+			ta.appendText(text + "\n");
+		}
+		// set the third scene for book content
+
+//		ServerRespond success = null;
+// 		String found = "null";
 //
-//		try {
-//			output.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+// 		try {
+// //			success = (ServerRespond)input.readObject();
+// 			found = input.readLine();
+// 		} catch (IOException e) {
+// 			System.out.println("err Controllerlib: searchBook: failed to receive from server");
+// 			e.printStackTrace();
+// 		}
 //
-////		ServerRespond success = null;
-//		Boolean found = false;
-//
-//		try {
-////			success = (ServerRespond)input.readObject();
-//			found = inputdata.readBoolean();
-//		} catch (IOException e) {
-//			System.out.println("err Controllerlib: searchBook: failed to receive from server");
-//			e.printStackTrace();
-//		}
-//
-//		if (found) {
-//			System.out.println("Book found");
-//		}
-//		else {
-//			System.out.println("Book no found");
-//		}
+// 		if (found.equals("found")) {
+// 			System.out.println("Book found");
+// 		}
+// 		else {
+// 			System.out.println("Book no found");
+// 		}
 
 	}
-
-//	public void LoginHandler(ActionEvent e) {
-//	}
 
 	public void LoginHandler(ActionEvent action_e) {
-		String id = username.getText();
-		String pswd = password.getText();
-		int type = 1;
+		String id = username.getText().trim();
+		String pswd = password.getText().trim();
+		// int type = 1;
+		String type = "login";
 
-		Message msg = new Message(id, pswd, type);
+		output.println(type+" "+id+":"+pswd);
+		output.flush();
+
+		// ServerRespond success = null;
+		String success = "null";
 		try {
-			output.writeObject(msg);
-//			output.flush();
-		} catch (IOException e) {
-			System.out.println("err Controllerlib: loggedin: problem sending message to server");
-			e.printStackTrace();
-		}
-
-		ServerRespond success = null;
-
-		try {
-			success = (ServerRespond) input.readObject();
+			success = input.readLine();
 		} catch (IOException e) {
 			System.out.println("err Controllerlib: registered: failed to receive from server");
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			System.out.println("err Controllerlib: registered: failed to receive from server, can't find the class");
-			e.printStackTrace();
 		}
 
-		if (success.getSuccess()) {
-			Platform.runLater(() -> {
-				ta.appendText(id + " logged in successfully");
-			});
-
+		if (success.equals("loginsuccess")) {
 			try {
-//			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UserWindow.fxml"));
-//			Parent root1 = (Parent) fxmlLoader.load();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("UserWindow.fxml"));
+	            Parent root1 = loader.load();
 
-//				Parent root1 = FXMLLoader.load(getClass().getResource("UserWindow.fxml"));
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("UserWindow.fxml"));
-            Parent root1 = loader.load();
-
-            ControllerUserwin scene2Controller = loader.getController();
-            scene2Controller.init(this);
+	            scene2Controller = loader.getController();
+	            scene2Controller.init(this);
+				String booknames = "null";
+				try {
+//					System.out.println("problems when reading booknames");
+					booknames = input.readLine();
+				} catch (IOException ioe) {
+					System.out.println("problem reading booklist");
+				}
+				scene2Controller.showbooklist(booknames);
 
 				Stage stage = new Stage();
 				stage.setScene(new Scene(root1));
@@ -176,6 +159,14 @@ public class Controllerlib{
 
 			}
 
+			Platform.runLater(() -> {
+				ta.appendText(id + " log in successfully\n");
+			});
+		}
+		else {
+			Platform.runLater(() -> {
+				ta.appendText(id + " log in fail\n");
+			});
 		}
 
 
@@ -183,40 +174,33 @@ public class Controllerlib{
 
 	public void RegisterHandler(ActionEvent e) {
 //		model.initialization();
-		String id = username.getText();
-		String pswd = password.getText();
-		ta.appendText(registered(id, pswd));
-	}
+		String id = username.getText().trim();
+		String pswd = password.getText().trim();
+		// ta.appendText(registered(id, pswd));
+		// int type = 0;
+		String type = "register";
+		output.println(type+" "+id+":"+pswd);
+		output.flush();
 
-	public String registered(String id, String password) {
-		int type = 0;
-		Message msg = new Message(id, password, type);
-		try {
-			output.writeObject(msg);
-//			output.flush();
-		} catch (IOException e) {
-			System.out.println("err Controllerlib: registered: problem sending message to server");
-			e.printStackTrace();
-		}
-
-		ServerRespond success = null;
+		String success = "null";
 
 		try {
-			success = (ServerRespond) input.readObject();
-		} catch (IOException e) {
+			success = input.readLine();
+		} catch (IOException ioe) {
 			System.out.println("err Controllerlib: registered: failed to receive from server");
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			System.out.println("err Controllerlib: registered: failed to receive from server, can't find the class");
-			e.printStackTrace();
+			ioe.printStackTrace();
 		}
 
-		if (success.getSuccess()) {
-			return id + " registered\n";
+		if (success.equals("registersuccess")) {
+			Platform.runLater(() -> {
+				ta.appendText(id+" register success\n");
+			});
 
 		}
 		else {
-			return id+" not registered \n";
+			Platform.runLater(() -> {
+				ta.appendText(id+" register fail\n");
+			});
 		}
 
 	}

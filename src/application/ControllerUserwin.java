@@ -19,73 +19,26 @@ public class ControllerUserwin {
 	ObjectInputStream input = null;
 	Controllerlib conlib = null;
 
-//	@FXML
-//	public void initialize() {
-//		try {
-//			socket = new Socket(host, port);
-//			//has to be output first then input !!!
-//			output = new ObjectOutputStream(socket.getOutputStream());
-//			input = new ObjectInputStream(socket.getInputStream());
-//		} catch (IOException e) {
-//			System.out.println("err Controllerlib: constructor: socket setting problem\n");
-//			e.printStackTrace();
-//		}
-//
-//	}
-
-//	public void init(Socket socket) {
-//		try {
-//			this.socket = socket;
-//			//has to be output first then input !!!
-//			output = new ObjectOutputStream(socket.getOutputStream());
-//			input = new ObjectInputStream(socket.getInputStream());
-//		} catch (IOException e) {
-//			System.out.println("err ControllerUserwin: init: socket setting problem\n");
-//			e.printStackTrace();
-//		}
-//	}
-
-//	public void initialize() {
-//		try {
-//			socket = new Socket("localhost", 1998);
-//			//has to be output first then input !!!
-//			output = new ObjectOutputStream(socket.getOutputStream());
-//			input = new ObjectInputStream(socket.getInputStream());
-//		} catch (IOException e) {
-//			System.out.println("err ControllerUserwin: init: socket setting problem\n");
-//			e.printStackTrace();
-//		}
-//	}
-
 	public void init(Controllerlib conlib) {
 		this.conlib = conlib;
 	}
 
 	public void LogoutHandler() {
 		conlib.LogoutHandler();
-
-//		Message msg = new Message("null", "null", 2);
-//		try {
-//			output.writeObject(msg);
-////			output.flush();
-//		} catch (IOException e) {
-//			System.out.println("err Controllerlib: loggedin: problem sending message to server");
-//			e.printStackTrace();
-//		}
-//
-//		try {
-//			output.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-
 		System.out.println("Userwindow Controller: reached LogoutHandler");
 	}
 
-	public void SearchBook() {
+	public void SearchBook() throws IOException {
 		String input = userinput.getText().trim();
 		conlib.SearchBook(input);
 		System.out.println("Userwindow Controller: reached search button");
+	}
+
+	public void showbooklist(String booknames) {
+		String[] books = booknames.split(" ");
+		for (String name:books) {
+			booklist.appendText(name + "\n");
+		}
 	}
 
 }
