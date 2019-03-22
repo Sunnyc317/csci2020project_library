@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Serverlib{
@@ -26,12 +27,17 @@ public class Serverlib{
 	}
 
 	public void start() throws IOException {
-
+//		TextArea ta = new TextArea();
+//		StackPane pane = new StackPane();
+//		pane.getChildren().add(ta);
+//
+//		stage.setScene(new Scene(ta, 400, 400));
+//		stage.show();
 	    while(true) {
 	    	Socket socket = sSocket.accept();
 	    	System.out.println("Serverlib: run: reached here, socket accepted");
 	    	ServerHandler handle = new ServerHandler(socket);
-	    	handle.run();
+//	    	handle.run();
 	    	new Thread(handle).start();
 	    }
 

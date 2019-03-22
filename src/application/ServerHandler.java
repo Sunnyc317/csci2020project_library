@@ -158,7 +158,7 @@ public class ServerHandler implements Runnable{
 		return booknames;
 	}
 
-	public String showcontent(String request) {
+	public ArrayList<String> showcontent(String request) {
 		String[] commands = request.split(" ");
 		String bookname = commands[1] + ".txt";
 		File book = new File(bookname);
@@ -169,13 +169,17 @@ public class ServerHandler implements Runnable{
 			e.printStackTrace();
 		}
 
-		String content = "";
+		ArrayList<String> content = new ArrayList<String>();
+//		String[] content = null;
 		if (inputc != null) {
+//			content = new String[1];
+//			content[0] = inputc.nextLine();
+			int index = 0;
 			while (inputc.hasNext()) {
-				content += inputc.nextLine() + "*";
+				content.add(inputc.nextLine() );
 			}
 		}
-		System.out.println(content);
+		// System.out.println(content);
 		return content;
 	}
 
@@ -216,11 +220,23 @@ public class ServerHandler implements Runnable{
 		else if (request.startsWith("search")) {
 			Boolean found = searchbookrequest(request);
 			if (found) {
+//				toClient.print(true);
 				toClient.println("searchsuccess");
 				toClient.flush();
-				String content = showcontent(request);
-				toClient.println(content);
+				// String content = showcontent(request);
+				ArrayList<String> content = showcontent(request);
+
+				int length = content.size();
+				toClient.print(length);
+//				toClient.println(length + "");
 				toClient.flush();
+				for (int i = 0; i < length; i++) {
+					toClient.println(content.get(i));
+					toClient.flush();
+					// System.out.println();
+				}
+				// toClient.println(content);
+				// toClient.flush();
 			}
 			else {
 				toClient.println("searchfail");
@@ -248,11 +264,11 @@ public class ServerHandler implements Runnable{
 			// Message msg = null;
 			String request = "null";
 			try {
-				// msg = (Message)fromClient.readObject();
 				request = fromClient.readLine();
+				// msg = (Message)fromClient.readObject();
 			} catch (IOException e) {
-				System.out.println("err ServerHandler: run: problem receiving message from client, line31");
-				e.printStackTrace();
+//				System.out.println("err ServerHandler: run: problem receiving message from client, line31");
+//				e.printStackTrace();
 			}
 			connected = listenRequest(request);
 		}

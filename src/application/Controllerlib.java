@@ -88,13 +88,29 @@ public class Controllerlib{
 
 		output.println("search " + userinput);
 		output.flush();
-		output.close();
+		// output.close();
+//		int length = Integer.parseInt(input.readLine());
+		String found = input.readLine();
+		if (found.equals("searchsuccess")) {
+			int length = input.read();
+			// get the length of the string array
+			String[] content = new String[length];
+			for (int i = 0; i < length; i ++) {
+				content[i] = input.readLine();
+				ta.appendText(content[i] + "\n");
+				System.out.println("the content is sent!");
+			}
 
-		String content = input.readLine();
-		String[] lines = content.split("*");
-		for (String text:lines) {
-			ta.appendText(text + "\n");
 		}
+		else {
+			System.out.println(found);
+		}
+
+
+//		String[] lines = content.split("*");
+//		for (String text:lines) {
+//			ta.appendText(text + "\n");
+//		}
 		// set the third scene for book content
 
 //		ServerRespond success = null;
