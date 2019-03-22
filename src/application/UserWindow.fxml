@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.application.Application?>
 <?import java.net.*?>
@@ -19,16 +20,26 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TextArea?>
 
-
-<GridPane fx:controller="application.ControllerUserwin" xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" vgap="10">
-<padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
-	<TextField fx:id="userinput" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-	<Button text="search" onAction="#SearchBook" fx:id="btsearch" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-
-	<TextArea fx:id="booklist" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-	<Button text="log out" onAction="#LogoutHandler" fx:id="btlogout" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+<GridPane hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="application.ControllerUserwin">
+<padding><Insets bottom="15.0" left="15.0" right="15.0" top="15.0" /></padding>
+   <children>
+   	<TextField fx:id="userinput" prefHeight="20.0" prefWidth="514.0" promptText="Enter book name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+   	<Button fx:id="btsearch" onAction="#SearchBook" text="Search" GridPane.columnIndex="1" />
+   
+   	<TextArea fx:id="booklist" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" />
+   	<Button fx:id="btlogout" onAction="#LogoutHandler" text="Sign out" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+   </children>
+   <columnConstraints>
+      <ColumnConstraints halignment="LEFT" maxWidth="592.0" minWidth="382.0" prefWidth="574.0" />
+      <ColumnConstraints maxWidth="267.0" minWidth="57.0" prefWidth="76.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints valignment="TOP" />
+      <RowConstraints valignment="BOTTOM" />
+   </rowConstraints>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 
 
 </GridPane>
-
-

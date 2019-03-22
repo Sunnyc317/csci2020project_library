@@ -14,9 +14,11 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			primaryStage.setTitle("lib test");
+			primaryStage.setTitle("Log in");
+			primaryStage.resizableProperty().setValue(Boolean.FALSE);
 	        Parent root = FXMLLoader.load(getClass().getResource("uilib.fxml"));
 	        primaryStage.setScene(new Scene(root));
+
 	        primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
