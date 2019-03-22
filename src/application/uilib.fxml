@@ -38,7 +38,7 @@
                </GridPane.margin></TextField>
          
          	<Label text="Password:" GridPane.rowIndex="2" />
-         	<PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         	<PasswordField fx:id="password" onKeyReleased="#isEnterHit" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          
          	<TextArea fx:id="ta" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
             <Label fx:id="invalidUsername" text="Invalid Username" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1" />
