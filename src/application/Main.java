@@ -16,7 +16,7 @@ public class Main extends Application {
 		try {
 			primaryStage.setTitle("lib test");
 	        Parent root = FXMLLoader.load(getClass().getResource("uilib.fxml"));
-	        primaryStage.setScene(new Scene(root, 600, 400));
+	        primaryStage.setScene(new Scene(root));
 	        primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
