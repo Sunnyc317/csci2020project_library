@@ -20,11 +20,11 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TextArea?>
 
-<GridPane hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="application.ControllerUserwin">
+<GridPane hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControllerUserwin">
 <padding><Insets bottom="15.0" left="15.0" right="15.0" top="15.0" /></padding>
    <children>
    	<TextField fx:id="userinput" prefHeight="20.0" prefWidth="514.0" promptText="Enter book name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-   	<Button fx:id="btsearch" onAction="#SearchBook" text="Search" GridPane.columnIndex="1" />
+   	<Button fx:id="btsearch" onAction="#SearchBook" prefWidth="76.0" text="Search" GridPane.columnIndex="1" />
    
    	<TextArea fx:id="booklist" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" />
    	<Button fx:id="btlogout" onAction="#LogoutHandler" text="Sign out" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
