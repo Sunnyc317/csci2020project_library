@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.application.Application?>
 <?import java.net.*?>
@@ -19,16 +20,61 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TextArea?>
 
-
-<GridPane fx:controller="application.ControllerUserwin" xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" vgap="10">
-<padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
-	<TextField fx:id="userinput" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-	<Button text="search" onAction="#SearchBook" fx:id="btsearch" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-
-	<TextArea fx:id="booklist" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-	<Button text="log out" onAction="#LogoutHandler" fx:id="btlogout" GridPane.rowIndex="1" GridPane.columnIndex="1" />
-
-
-</GridPane>
-
-
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="701.0" prefWidth="1424.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControllerUserwin">
+   <children>
+      <HBox prefHeight="31.0" prefWidth="1424.0">
+         <children>
+            <MenuBar maxHeight="31.0" minHeight="31.0" prefHeight="31.0" prefWidth="1424.0" HBox.hgrow="ALWAYS">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                        <MenuItem mnemonicParsing="false" text="Open..." />
+                        <MenuItem mnemonicParsing="false" text="Save as..." />
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Music">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Open..." />
+                        <MenuItem mnemonicParsing="false" text="Resume" />
+                        <MenuItem mnemonicParsing="false" text="Pause" />
+                        <MenuItem mnemonicParsing="false" text="Stop" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </children>
+      </HBox>
+      <GridPane hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="670.0" prefWidth="1424.0" vgap="10" VBox.vgrow="ALWAYS">
+      <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+         	<TextField fx:id="userinput" prefHeight="20.0" prefWidth="514.0" promptText="Enter book name" />
+         	<Button fx:id="btsearch" onAction="#SearchBook" prefHeight="31.0" prefWidth="85.0" text="Search" GridPane.columnIndex="1" />
+         
+         	<TextArea fx:id="booklist" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="609.0" prefWidth="1404.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+         	<Button fx:id="btlogout" maxHeight="31.0" maxWidth="85.0" minHeight="31.0" minWidth="85.0" onAction="#LogoutHandler" prefHeight="31.0" prefWidth="85.0" text="Sign out" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
+         </children>
+         <columnConstraints>
+            <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="382.0" prefWidth="574.0" />
+            <ColumnConstraints hgrow="NEVER" minWidth="0.0" prefWidth="82.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="90.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="31.0" minHeight="31.0" prefHeight="31.0" valignment="TOP" vgrow="NEVER" />
+            <RowConstraints maxHeight="1.7976931348623157E308" valignment="BOTTOM" />
+         </rowConstraints>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      
+      
+      </GridPane>
+   </children>
+</VBox>

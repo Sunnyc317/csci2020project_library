@@ -20,6 +20,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.fxml.Initializable;
 
@@ -168,6 +170,7 @@ public class Controllerlib{
 				scene2Controller.showbooklist(booknames);
 
 				Stage stage = new Stage();
+				stage.setTitle("Library");
 				stage.setScene(new Scene(root1));
 				stage.show();
 			} catch(Exception err) {
@@ -221,4 +224,9 @@ public class Controllerlib{
 
 	}
 
+	public void isEnterHit(KeyEvent keyEvent) {
+		if (keyEvent.getCode() == KeyCode.ENTER) {
+			btlogin.fire();
+		}
+	}
 }
