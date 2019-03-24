@@ -9,7 +9,7 @@ Download the code from https://github.com/Sunnyc317/csci2020project_library
 ## HOW TO RUN
 The program is runned and tested on Eclipse platform using java 8
 1. Use eclipse to run serverlib.java first to start the server
-2. Run controllib.java to start the user interface
+2. Run Main.java to start the user interface
 
 ## User instruction
 This application is a free library where user can log in and search for book in the lists and read. 
