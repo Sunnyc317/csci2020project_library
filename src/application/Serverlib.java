@@ -27,7 +27,12 @@ public class Serverlib{
 	}
 
 	public void start() throws IOException {
-
+//		TextArea ta = new TextArea();
+//		StackPane pane = new StackPane();
+//		pane.getChildren().add(ta);
+//
+//		stage.setScene(new Scene(ta, 400, 400));
+//		stage.show();
 	    while(true) {
 	    	Socket socket = sSocket.accept();
 	    	System.out.println("Serverlib: run: reached here, socket accepted");

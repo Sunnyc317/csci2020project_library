@@ -21,10 +21,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import javafx.fxml.Initializable;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+import javafx.fxml.Initializable;
 
 // AnchorPane
 
@@ -48,6 +48,7 @@ public class Controllerlib{
 	@FXML public Button btlogin;
 	@FXML public Button btregister;
 	@FXML public TextArea ta;
+
 	@FXML public Label notification1;
 	@FXML public Label notification2;
 
@@ -93,7 +94,7 @@ public class Controllerlib{
 	}
 
 	public void SearchBook(String userinput) throws IOException {
-		System.out.println(userinput);
+
 		output.println("search " + userinput);
 		output.flush();
 		// output.close();
@@ -116,7 +117,7 @@ public class Controllerlib{
             contentController.showcontent(content);
 
             Stage stage = new Stage();
-			stage.setScene(new Scene(root2, 600, 300));
+			stage.setScene(new Scene(root2));
 			stage.show();
 
 		}
@@ -126,11 +127,16 @@ public class Controllerlib{
 
 	}
 
-	public void LoginHandler(ActionEvent action_e) {
+	public int LoginHandler(ActionEvent action_e) {
 		String id = username.getText().trim();
 		String pswd = password.getText().trim();
 		// int type = 1;
 		String type = "login";
+		if (pswd.isEmpty()) {
+			notification2.setText("password cannot be empty");
+			notification1.setText("");
+			return -1;
+		}
 
 		// output.println(type+" "+id+":"+pswd);
 		output.println(type+" "+id+" "+pswd);
@@ -168,17 +174,17 @@ public class Controllerlib{
 				System.out.println("Controllerlib: LoginHandler: problem opening the second window");
 			}
 
-
 			Platform.runLater(() -> {
 				ta.appendText(id + " log in successfully\n");
 			});
 		}
 		else if (success.equals("alreadyloggedin")) {
-			notification1.setText("This account already logged in");
+			notification1.setText("Account already logged in");
+			notification2.setText("");
 			ta.appendText("User already logged in");
 		}
 		else if (success.equals("password wrong")) {
-			notification2.setText("Password wrong");
+			notification2.setText("password wrong");
 			notification1.setText("");
 			ta.appendText("password wrong\n");
 			Platform.runLater(() -> {
@@ -186,22 +192,30 @@ public class Controllerlib{
 			});
 		}
 		else {
+			notification1.setText("User doesn't exist");
+			notification2.setText("");
 			ta.appendText("user doesn't exist");
 		}
+		return 0;
 	}
 
-	public void RegisterHandler(ActionEvent e) {
+	public int RegisterHandler(ActionEvent e) {
 //		model.initialization();
 		String id = username.getText().trim();
 		String pswd = password.getText().trim();
 		// ta.appendText(registered(id, pswd));
 		// int type = 0;
+		if (pswd.isEmpty()) {
+			notification2.setText("password cannot be empty");
+			notification1.setText("");
+			return -1;
+		}
 		String type = "register";
 		output.println(type+" "+id+" "+pswd);
 		output.flush();
 
 		String success = "null";
-		notification2.setText("");
+
 		try {
 			success = input.readLine();
 		} catch (IOException ioe) {
@@ -210,7 +224,8 @@ public class Controllerlib{
 		}
 
 		if (success.equals("success")) {
-			notification1.setText("register success");
+			notification1.setText("registration success");
+			notification2.setText("");
 			Platform.runLater(() -> {
 				ta.appendText(id+" register success\n");
 			});
@@ -218,10 +233,12 @@ public class Controllerlib{
 		}
 		else {
 			notification1.setText("User name already used");
+			notification2.setText("");
 			Platform.runLater(() -> {
 				ta.appendText(id+" register fail, User already exist\n");
 			});
 		}
+		return 0;
 
 	}
 
