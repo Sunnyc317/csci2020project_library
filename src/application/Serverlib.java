@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Serverlib{
@@ -31,19 +32,9 @@ public class Serverlib{
 	    	Socket socket = sSocket.accept();
 	    	System.out.println("Serverlib: run: reached here, socket accepted");
 	    	ServerHandler handle = new ServerHandler(socket);
-	    	handle.run();
+//	    	handle.run();
 	    	new Thread(handle).start();
 	    }
-
-//	    	try {
-//	    	} catch (IOException e) {
-//	    		System.out.println("err Serverlib: ServerSocket accept (connetction) problem");
-//	    		e.printStackTrace();
-//	    	}
-
-//		new Thread(() -> {
-//
-//		});
 
 	}
 

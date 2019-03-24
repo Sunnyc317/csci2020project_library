@@ -17,11 +17,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.fxml.Initializable;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 // AnchorPane
 
@@ -45,12 +48,15 @@ public class Controllerlib{
 	@FXML public Button btlogin;
 	@FXML public Button btregister;
 	@FXML public TextArea ta;
+	@FXML public Label notification1;
+	@FXML public Label notification2;
 
 //	UserWindow.fxml attributes
 	@FXML public TextField userinput;
 	@FXML public TextArea booklist;
 //	@FXML public Button search;
 	ControllerUserwin scene2Controller;
+	ControllerContent contentController;
 
 
 //	public Modellib model = null;
@@ -78,42 +84,45 @@ public class Controllerlib{
 	}
 
 	public void LogoutHandler() {
-		String request = "logout";
+		String request = "logout " + username.getText().trim();
 		output.println(request);
 		output.flush();
 		output.close();
+
+		Platform.exit();
 	}
 
 	public void SearchBook(String userinput) throws IOException {
-
+		System.out.println(userinput);
 		output.println("search " + userinput);
 		output.flush();
-		output.close();
+		// output.close();
+//		int length = Integer.parseInt(input.readLine());
+		String found = input.readLine();
+		if (found.equals("searchsuccess")) {
+			int length = input.read();
+			// get the length of the string array
+			String[] content = new String[length];
+			for (int i = 0; i < length; i ++) {
+				content[i] = input.readLine();
+				ta.appendText(content[i] + "\n");
+//				System.out.println("the content is sent!");
+			}
 
-		String content = input.readLine();
-		String[] lines = content.split("*");
-		for (String text:lines) {
-			ta.appendText(text + "\n");
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("contentWindow.fxml"));
+            Parent root2 = loader.load();
+
+            contentController = loader.getController();
+            contentController.showcontent(content);
+
+            Stage stage = new Stage();
+			stage.setScene(new Scene(root2, 600, 300));
+			stage.show();
+
 		}
-		// set the third scene for book content
-
-//		ServerRespond success = null;
-// 		String found = "null";
-//
-// 		try {
-// //			success = (ServerRespond)input.readObject();
-// 			found = input.readLine();
-// 		} catch (IOException e) {
-// 			System.out.println("err Controllerlib: searchBook: failed to receive from server");
-// 			e.printStackTrace();
-// 		}
-//
-// 		if (found.equals("found")) {
-// 			System.out.println("Book found");
-// 		}
-// 		else {
-// 			System.out.println("Book no found");
-// 		}
+		else {
+			System.out.println(found);
+		}
 
 	}
 
@@ -123,7 +132,8 @@ public class Controllerlib{
 		// int type = 1;
 		String type = "login";
 
-		output.println(type+" "+id+":"+pswd);
+		// output.println(type+" "+id+":"+pswd);
+		output.println(type+" "+id+" "+pswd);
 		output.flush();
 
 		// ServerRespond success = null;
@@ -135,7 +145,7 @@ public class Controllerlib{
 			e.printStackTrace();
 		}
 
-		if (success.equals("loginsuccess")) {
+		if (success.equals("success")) {
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("UserWindow.fxml"));
 	            Parent root1 = loader.load();
@@ -156,20 +166,28 @@ public class Controllerlib{
 				stage.show();
 			} catch(Exception err) {
 				System.out.println("Controllerlib: LoginHandler: problem opening the second window");
-
 			}
+
 
 			Platform.runLater(() -> {
 				ta.appendText(id + " log in successfully\n");
 			});
 		}
-		else {
+		else if (success.equals("alreadyloggedin")) {
+			notification1.setText("This account already logged in");
+			ta.appendText("User already logged in");
+		}
+		else if (success.equals("password wrong")) {
+			notification2.setText("Password wrong");
+			notification1.setText("");
+			ta.appendText("password wrong\n");
 			Platform.runLater(() -> {
 				ta.appendText(id + " log in fail\n");
 			});
 		}
-
-
+		else {
+			ta.appendText("user doesn't exist");
+		}
 	}
 
 	public void RegisterHandler(ActionEvent e) {
@@ -179,11 +197,11 @@ public class Controllerlib{
 		// ta.appendText(registered(id, pswd));
 		// int type = 0;
 		String type = "register";
-		output.println(type+" "+id+":"+pswd);
+		output.println(type+" "+id+" "+pswd);
 		output.flush();
 
 		String success = "null";
-
+		notification2.setText("");
 		try {
 			success = input.readLine();
 		} catch (IOException ioe) {
@@ -191,18 +209,26 @@ public class Controllerlib{
 			ioe.printStackTrace();
 		}
 
-		if (success.equals("registersuccess")) {
+		if (success.equals("success")) {
+			notification1.setText("register success");
 			Platform.runLater(() -> {
 				ta.appendText(id+" register success\n");
 			});
 
 		}
 		else {
+			notification1.setText("User name already used");
 			Platform.runLater(() -> {
-				ta.appendText(id+" register fail\n");
+				ta.appendText(id+" register fail, User already exist\n");
 			});
 		}
 
+	}
+
+	public void isEnterHit(KeyEvent keyEvent) {
+		if (keyEvent.getCode() == KeyCode.ENTER) {
+			btlogin.fire();
+		}
 	}
 
 }
