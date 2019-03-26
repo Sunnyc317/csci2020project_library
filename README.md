@@ -1,5 +1,5 @@
 # Free to Read Library
-Download the Library.jar from https://github.com/Sunnyc317/csci2020project_library
+Download the jar file (Library.jar) from https://github.com/Sunnyc317/csci2020project_library
 
 ## Contributors: 
 - Yiqing Cao 
