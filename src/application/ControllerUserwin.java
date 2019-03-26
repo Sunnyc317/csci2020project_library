@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+// This class is linked with UserWindow.fxml to interact with the users (for searching books and log out)
 public class ControllerUserwin {
 
 	@FXML public TextField userinput;
@@ -23,7 +23,7 @@ public class ControllerUserwin {
 		this.conlib = conlib;
 	}
 
-	public void LogoutHandler() {
+	public void LogoutHandler() throws IOException {
 		conlib.LogoutHandler();
 		System.out.println("Userwindow Controller: reached LogoutHandler");
 	}

@@ -4,22 +4,32 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+// This is a runnable object that handles one client
 public class ServerHandler implements Runnable{
 	Socket socket = null;
-	// ObjectInputStream fromClient = null;
-	// ObjectOutputStream toClient = null;
-	// DataOutputStream toClientdata = null;
 	BufferedReader fromClient = null;
 	PrintWriter toClient = null;
 	File userinfo = null;
 	File booklist = null;
 
+	// The constructor received the socket that is generated when accepting a client
+	// from Serverlib.java and assign it to the socket instance in the class
+	// The constructor also creates two File object,
+	// userinfo to store user id and password and
+	// booklist to store the list of booknames
 	public ServerHandler(Socket socket) {
 		this.socket = socket;
 		userinfo = new File("userinfo.txt");
 		booklist = new File("booklist.txt");
 	}
 
+	// This method would be called by listenRequest method
+	// This method execute the user's request of logging in and
+	// takes in user's id and password (using parameter request)
+	// and decide if the user can sign in (cannot if the account has been signed in /
+	// password is wrong/ user does not exist)
+	// The user id and password are the second and third element of the String array
+	// that is made by splitting the String variable request by blank space
 	public int loginRequest(String request) {
 		Scanner inputf = null;
 		try {
@@ -29,11 +39,9 @@ public class ServerHandler implements Runnable{
 			e.printStackTrace();
 		}
 		String[] msg = request.split(" ");
-		// String idNpassword = msg[1];
 		String id = msg[1];
 		String password = msg[2];
 
-		//return true if the user and password is in file
 		String[] info;
 		Boolean found = false;
 		while (inputf.hasNext()) {
@@ -72,14 +80,17 @@ public class ServerHandler implements Runnable{
 		toClient.flush();
 
 		if (found) {
-			String books = showbooklist();
-			toClient.println(books);
-			toClient.flush();
+			showbooklist();
 		}
 		return 0;
 	}
 
-
+	// This method would be called by listenRequest method
+	// This method receives user's request of registering and
+	// takes in user id & password (by taking parameter request)
+	// and decide if the user can register (cannot if user id is used)
+	// The user id and password are the second and third element of the String array
+	// that is made by splitting the String variable request by blank space
 	public Boolean registerRequest(String request) {
 		Scanner inputf = null;
 		FileWriter outputf = null;
@@ -94,26 +105,36 @@ public class ServerHandler implements Runnable{
 			e.printStackTrace();
 		}
 
+		// splitting the String variable request
+		// the format of request is "register user_id user_password"
 		String[] msg = request.split(" ");
 		String id = msg[1];
 		String password = msg[2];
-		String[] info;
 
+		// String array info is used for splitting user id & password in userinfo file
+		// user information is stored in userinfo file in the format of
+		// "user_id user_password user_state"
+		String[] info;
 		while (inputf.hasNext()) {
 			info = inputf.nextLine().split(" ");
+			//check if user id and the register user id is the same
 			if (id.equals(info[0])) {
 				System.out.println("User already registered");
 				inputf.close();
 				toClient.println("fail");
 				toClient.flush();
+				// the method is finished after executing this if statement
+				// since this user id is used
 				return false;
 			}
 		}
 
+		// if the user id is checked and is never used,
+		// write the user id and password to userinfo file and set user's state
+		// to 0, meaning the user is not logged in
 		try {
 			inputf.close();
 			outputf.write(id+" "+password + " 0\n");
-//			setuserstate(id, 0);
 			outputf.close();
 			toClient.println("success");
 			toClient.flush();
@@ -121,12 +142,18 @@ public class ServerHandler implements Runnable{
 			System.out.println("err ServerHandler: registerRequest: FileWriter writing problem");
 			e.printStackTrace();
 		}
-
 		return true;
 
 	}
 
+	// This method would be called by listenRequest method
+	// This method receives user's request of searching for books and
+	// takes in the book name that is entered by user (by taking parameter request)
+	// and decide if the book can be found (cannot if the book name is wrong / book doesn't exist)
+	// the user input book name is the second element of the String array
+	// that is made by splitting the String variable request by blank space
 	public Boolean searchbookrequest(String request) {
+		// the String request would be "search userinput_bookname"
 		String[] msg = request.split(" ");
 		String bookname = msg[1];
 		Scanner inputb = null;
@@ -141,20 +168,28 @@ public class ServerHandler implements Runnable{
 			if (bookname.equals(inputb.nextLine() ) ) {
 				System.out.println("book found by server");
 				inputb.close();
+				toClient.println("searchsuccess");
+				toClient.flush();
 				return true;
 			}
 		}
+
+		toClient.println("searchfail");
+		toClient.flush();
 		System.out.println("book not found by server");
 		return false;
 	}
 
-	public String showbooklist() {
+	// This method would be called by loginRequest method,
+	// it would show the list of books in the second window
+	// it would send a String of list of book names that are separated by
+	// blank space
+	public void showbooklist() {
 		String booknames = "";
 		Scanner inputb = null;
 		try {
 			inputb = new Scanner(booklist);
 		} catch (FileNotFoundException e) {
-
 			e.printStackTrace();
 		}
 
@@ -164,11 +199,18 @@ public class ServerHandler implements Runnable{
 				System.out.println(booknames);
 			}
 		}
-		return booknames;
+		toClient.println(booknames);
+		toClient.flush();
 	}
 
-	public ArrayList<String> showcontent(String request) {
+	// This method would be called by listenRequest method
+	// This method would show the book content that is requested by user
+	// the book name would take the String request and withdraw the book name from it
+	// request would be in formate "search bookname"
+	// ArrayList<String>
+	public void showcontent(String request) {
 		String[] commands = request.split(" ");
+		// get the absolute file name of the file by adding .txt
 		String bookname = commands[1] + ".txt";
 		File book = new File(bookname);
 		Scanner inputc = null;
@@ -179,30 +221,37 @@ public class ServerHandler implements Runnable{
 		}
 
 		ArrayList<String> content = new ArrayList<String>();
-//		String[] content = null;
 		if (inputc != null) {
-//			content = new String[1];
-//			content[0] = inputc.nextLine();
-//			int index = 0;
 			while (inputc.hasNext()) {
 				content.add(inputc.nextLine() );
 			}
 		}
-		// System.out.println(content);
-		return content;
+
+		int length = content.size();
+		toClient.print(length);
+		toClient.flush();
+		for (int i = 0; i < length; i++) {
+			toClient.println(content.get(i));
+			toClient.flush();
+		}
 	}
 
+	// This method would be called by loginRequest & listenRequest method
+	// This method is to set the state of user to 1 (logged in) when one user
+	// logged in to their account and to set the state of user to 0 (not logged in)
+	// when they log out
+	// It takes in user id & state(0 or 1) as parameter
 	public void setuserstate(String username, int state){
 		Scanner inputf = null;
 		File transfer = new File("alter.txt");
 		FileWriter outputf = null;
-//		FileWriter outputrewrite = null;
 		try {
 			inputf = new Scanner(userinfo);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// changing the state of the user when copying user information
+		// to another file alter.txt, and then put it back to userinfo file
 		try {
 			outputf = new FileWriter(transfer);
 			while (inputf.hasNext()) {
@@ -227,15 +276,18 @@ public class ServerHandler implements Runnable{
 			inputalter.close();
 
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
 	}
 
+	// This method would be called by run method
+	// This method takes in user's request and check what user's request is
+	// by checking the first word in the String request.
+	// According to different request, different method would be called
+	// This method also returns false if the user want to log out
 	public Boolean listenRequest(String request) {
 		if (request.startsWith("register")) {
-//			Boolean success = registerRequest(request);
 			registerRequest(request);
 		}
 		else if (request.startsWith("login")) {
@@ -250,27 +302,7 @@ public class ServerHandler implements Runnable{
 		else if (request.startsWith("search")) {
 			Boolean found = searchbookrequest(request);
 			if (found) {
-//				toClient.print(true);
-				toClient.println("searchsuccess");
-				toClient.flush();
-				// String content = showcontent(request);
-				ArrayList<String> content = showcontent(request);
-
-				int length = content.size();
-				toClient.print(length);
-//				toClient.println(length + "");
-				toClient.flush();
-				for (int i = 0; i < length; i++) {
-					toClient.println(content.get(i));
-					toClient.flush();
-					// System.out.println();
-				}
-				// toClient.println(content);
-				// toClient.flush();
-			}
-			else {
-				toClient.println("searchfail");
-				toClient.flush();
+				showcontent(request);
 			}
 		}
 		return true;
@@ -289,21 +321,18 @@ public class ServerHandler implements Runnable{
 			connected = false;
 		}
 
+		// listening to the client's request (until client wants to log out)
 		while (connected) {
 			System.out.println("It is connected now, listening to request. ");
-			// Message msg = null;
 			String request = "null";
 			try {
 				request = fromClient.readLine();
-				// msg = (Message)fromClient.readObject();
 			} catch (IOException e) {
-//				System.out.println("err ServerHandler: run: problem receiving message from client, line31");
-//				e.printStackTrace();
+				e.printStackTrace();
 			}
 			connected = listenRequest(request);
 		}
 
 	}
-
 
 }
