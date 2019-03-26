@@ -17,13 +17,13 @@ Download the Library.jar from https://github.com/Sunnyc317/csci2020project_libra
 1. download jar
 2. in terminal, type `java -cp Library.jar application.Serverlib` and hit enter
 3. open another terminal, type `java -cp Library.jar application.Main` and hit enter
-4. The server should be launched and user interface should've poped up
+4. The server (local host) should be launched and user interface should've poped up
 #### Alternative way
 1. Use eclipse to run serverlib.java first to start the server (make sure you're using java 1.8)
 2. Run Main.java to start the user interface
 
 ## User instruction
-This application is a free library where user can log in and search for book in the lists and read. 
+This application is a free library where user can log in and search for book in the list and read. 
 #### Steps: 
 1. register with your username and password
 2. log in with correct username and password
