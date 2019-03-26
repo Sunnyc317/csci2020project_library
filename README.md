@@ -4,15 +4,15 @@ Download the jar file (Library.jar) from https://github.com/Sunnyc317/csci2020pr
 ## Contributors: 
 - Yiqing Cao 
   - Networking (socket io), file io, multi-threading
-  - https://github.com/Sunnyc317
+  - Sunnyc317 - https://github.com/Sunnyc317
 - Yongkun Huang 
   - UI, integration
-  - https://github.com/55hyk
+  - 55hyk - https://github.com/55hyk
 - Rilang Chen 
   - Debugging, refactoring, commenting
-  - https://github.com/soysauceK
+  - soysauceK - https://github.com/soysauceK
 
-## HOW TO RUN
+## How to run
 #### Make sure jave 1.8 is installed
 1. download jar
 2. in terminal, type `java -cp Library.jar application.Serverlib` and hit enter
