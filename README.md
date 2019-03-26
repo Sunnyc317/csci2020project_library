@@ -1,5 +1,5 @@
 # Free to Read Library
-Download the code from https://github.com/Sunnyc317/csci2020project_library
+Download the jar from https://github.com/Sunnyc317/csci2020project_library
 
 ## Contributors: 
 - Yiqing Cao 
@@ -9,12 +9,17 @@ Download the code from https://github.com/Sunnyc317/csci2020project_library
   - UI, integration
   - https://github.com/55hyk
 - Rilang Chen 
-  - Debugging, integration
+  - Debugging, refactoring, commenting
   - https://github.com/soysauceK
 
 ## HOW TO RUN
-The program is runned and tested on Eclipse platform using java 8
-1. Use eclipse to run serverlib.java first to start the server
+#### Make sure jave 1.8 is installed
+1. download jar
+2. in terminal, type `java -cp Library.jar application.Serverlib` and hit enter
+3. open another terminal, type `java -cp Library.jar application.Main` and hit enter
+4. The server should be launched and user interface should've poped up
+#### Alternative way
+1. Use eclipse to run serverlib.java first to start the server (make sure you're using java 1.8)
 2. Run Main.java to start the user interface
 
 ## User instruction
